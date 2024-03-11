@@ -22,6 +22,6 @@ Criar um simples banco de dados aplicando os conceitos de POO aprendido durante 
 
 ## Colaboradores
 
-* [Alano](https://github.com/)
+* [Alano Regis](https://github.com/alanoregis)
 * [Bruno Pavese](https://github.com/brunopavese)
 * [David Khauan](https://github.com/davidkhauan)
