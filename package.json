@@ -1,0 +1,26 @@
+{
+  "name": "simulacao-de-bd",
+  "version": "1.0.0",
+  "description": "Projeto final de Simulação de um Banco de Dados para o módulo de POO do curso Santander Coders 2023",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunopavese/simulacao-de-bd.git"
+  },
+  "author": "Grupo 7: Alano, Bruno Pavese, David",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunopavese/simulacao-de-bd/issues"
+  },
+  "homepage": "https://github.com/brunopavese/simulacao-de-bd#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.25",
+    "nodemon": "^3.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.2"
+  }
+}
