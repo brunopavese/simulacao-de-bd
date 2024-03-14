@@ -7,12 +7,11 @@ export class BancoDeDados {
     this._listaDePessoas = []
   }
 
-  adicionar(pessoa: Pessoa): boolean {
+  adicionar(pessoa: Pessoa){
     if (this._listaDePessoas.some(element => element.nome === pessoa.nome)) {
-      return false
+      throw new Error('Pessoa já cadastrada')
     }
     this._listaDePessoas.push(pessoa)
-    return true
   }
 
   listar(): Array<Pessoa> {
