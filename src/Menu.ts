@@ -3,7 +3,7 @@ import { Pessoa } from './Pessoa'
 
 const p = require('prompt-sync')()
 
-const bd = new BancoDeDados()
+const bd = BancoDeDados.instancia
 
 const opcoes = `
 ========================
@@ -87,7 +87,7 @@ function listarBancoDeDados() {
 function buscarPeloNome() {
   const nome = p('Digite um nome de quem deseja buscar: ')
 
-  const resultadoDaBusca = bd.buscarPeloNome(nome)
+  const resultadoDaBusca = bd.buscar(nome)
   const resposta = resultadoDaBusca?.toString() ?? 'Não foi possível achar nenhum registro no nome desejado'
   console.log(resposta)
 }
