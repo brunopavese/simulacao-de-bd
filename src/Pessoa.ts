@@ -5,8 +5,8 @@ export class Pessoa {
 
   constructor(nome: string, idade: number, email: string) {
     if (!Pessoa.validaNome(nome)) throw new Error('Nome inválido')
-    if (!Pessoa.validaEmail(email)) throw new Error('Email inválido')
     if (!Pessoa.validaIdade(idade)) throw new Error('Idade inválida: mínimo 1 e máximo de 150')
+    if (!Pessoa.validaEmail(email)) throw new Error('Email inválido')
     this._nome = nome.toUpperCase()
     this._idade = idade
     this._email = email.toLowerCase()
@@ -23,6 +23,10 @@ export class Pessoa {
   static validaEmail(email: string): boolean {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
   }
+
+  toString(): string {
+    return `Nome: ${this._nome}, Idade: ${this._idade}, Email: ${this._email}`
+  } 
 
   get nome(): string {
     return this._nome

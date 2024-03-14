@@ -19,15 +19,27 @@ export class BancoDeDados {
     return this._listaDePessoas
   }
 
-  atualizar(nome: string, novoNome?: string, novaIdade?: number): boolean {
+  atualizar(nome: string, novoNome?: string, novaIdade?: number): Pessoa {
     const index = this._listaDePessoas.findIndex(element => element.nome === nome.toUpperCase())
 
-    if (index === -1) return false
+    if (index === -1) throw new Error('Não foi possível achar nenhum registro no nome desejado')
 
-    if (novoNome) this._listaDePessoas[index].nome = novoNome
-    if (novaIdade) this._listaDePessoas[index].idade = novaIdade
+    if (!novoNome && !novaIdade) throw new Error('Você precisa informar ao menos um novo dado (Nome ou idade)')
 
-    return true
+    if (novoNome) {
+      if (Pessoa.validaNome(novoNome)) {
+        this._listaDePessoas[index].nome = novoNome
+      } else
+        throw new Error('Nome inválido')
+    }
+
+    if (novaIdade) {
+      if (Pessoa.validaIdade(novaIdade)) {
+        this._listaDePessoas[index].idade = novaIdade
+      } else
+        throw new Error('Idade inválida: mínimo 1 e máximo de 150')
+    }
+    return this._listaDePessoas[index]
   }
 
   buscarPeloNome(nome: string): Pessoa | undefined {
