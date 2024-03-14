@@ -52,10 +52,8 @@ function registrarPessoa() {
     const email = p('Digite um email ')
 
     const pessoa = new Pessoa(nome, parseInt(idade), email)
-    bd.adicionar(pessoa) ?
-    console.log(`\nCadastro realizado com sucesso\n${pessoa.toString()}`) :
-    console.log(`\nPessoa já cadastrada`)
-
+    bd.adicionar(pessoa) 
+    console.log(`\nCadastro realizado com sucesso\n${pessoa.toString()}`)
   } catch (error) {
     console.log('Erro ao registrar pessoa:', error)
   }
@@ -82,7 +80,7 @@ function deletarPessoa() {
 }
 
 function listarBancoDeDados() {
-  console.log(bd.listar())
+  console.table(bd.listar())
 }
 
 function buscarPeloNome() {
