@@ -2,10 +2,10 @@
   "name": "simulacao-de-bd",
   "version": "1.0.0",
   "description": "Projeto final de Simulação de um Banco de Dados para o módulo de POO do curso Santander Coders 2023",
-  "main": "Menu.ts",
+  "main": "App.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/Menu.ts"
+    "dev": "ts-node-dev src/App.ts"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
+    "@types/prompt-sync": "^4.2.3",
     "prompt-sync": "^4.2.0"
   }
 }

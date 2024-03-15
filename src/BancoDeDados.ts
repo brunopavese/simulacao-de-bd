@@ -27,16 +27,17 @@ export class BancoDeDados {
     return this._pessoas
   }
 
-  public buscar(nome: string): Pessoa | undefined {
-    return this._pessoas.find(elemento => elemento.nome === nome.toUpperCase())
+  public buscar(nome: string): string {
+    const index = this.indexOf(nome)
+
+    return this._pessoas[index].toString()
   }
 
-  public atualizar(nome: string, novoNome?: string, novaIdade?: number): Pessoa {
-    const index = this._pessoas.findIndex(elemento => elemento.nome === nome.toUpperCase())
+  public atualizar(nome: string, novoNome?: string, novaIdade?: number): void {
+    const index = this.indexOf(nome)
 
-    if (index === -1) throw new Error('Não foi possível achar nenhum registro no nome desejado')
-
-    if (!novoNome && !novaIdade) throw new Error('Você precisa informar ao menos um novo dado (Nome ou idade)')
+    if (!novoNome && !novaIdade)
+      throw new Error('Você precisa informar ao menos um novo dado (Nome ou Idade)')
 
     if (novoNome) {
       if (Pessoa.validaNome(novoNome)) {
@@ -51,16 +52,20 @@ export class BancoDeDados {
       } else
         throw new Error('Idade inválida: mínimo 1 e máximo de 150')
     }
-    return this._pessoas[index]
   }
 
-  public deletar(nome: string): boolean {
+  public deletar(nome: string): void {
+    const index = this.indexOf(nome)
+
+    this._pessoas.splice(index, 1)
+  }
+
+  private indexOf(nome: string): number {
     const index = this._pessoas.findIndex(elemento => elemento.nome === nome.toUpperCase())
 
-    if (index === -1) {
-      return false
-    }
-    this._pessoas.splice(index, 1)
-    return true
+    if (index === -1)
+      throw new Error('Não foi possível achar nenhum registro no nome desejado')
+
+    return index
   }
 }

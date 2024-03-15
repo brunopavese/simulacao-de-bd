@@ -1,93 +1,107 @@
 import { BancoDeDados } from './BancoDeDados'
 import { Pessoa } from './Pessoa'
+import promptSync from 'prompt-sync'
 
-const p = require('prompt-sync')()
+export class Menu {
+  private static prompt = promptSync()
+  private bd: BancoDeDados
 
-const bd = BancoDeDados.instancia
-
-const opcoes = `
-========================
-          Menu
-========================
-1. Registrar pessoa
-2. Atualizar dados de pessoa
-3. Deletar pessoa
-4. Ver pessoas registradas
-5. Buscar pessoa pelo nome
-0. Sair
-========================
-`
-let opcao: string
-
-do {
-  console.info(opcoes)
-  opcao = p('Escolha uma opção: ')
-
-  switch (opcao) {
-    case '0':
-      console.log('Sistema encerrado!')
-      break
-    case '1':
-      registrarPessoa()
-      break
-    case '2':
-      atualizarPessoa()
-      break
-    case '3':
-      deletarPessoa()
-      break
-    case '4':
-      listarBancoDeDados()
-      break
-    case '5':
-      buscarPeloNome()
-      break
+  constructor(bancoDeDados: BancoDeDados) {
+    this.bd = bancoDeDados
   }
-} while (opcao !== '0')
 
-function registrarPessoa() {
-  try {
-    const nome = p('Digite um nome: ')
-    const idade = p('Digite a idade: ')
-    const email = p('Digite um email: ')
+  public abrir(): void {
+    let entrada: string
+    do {
+      console.log(`
+      ========================
+                Menu
+      ========================
+      1. Registrar
+      2. Ver registros
+      3. Buscar registro pelo nome
+      4. Atualizar dados
+      5. Deletar registro
+      0. Sair
+      ========================
+      `)
+      entrada = Menu.prompt('Escolha uma opção: ')
 
-    const pessoa = new Pessoa(nome, parseInt(idade), email)
-    bd.adicionar(pessoa)
-
-    console.log(`\nCadastro realizado com sucesso\n${pessoa.toString()}`)
-  } catch (error) {
-    console.log('Erro ao registrar pessoa:', error)
+      switch (entrada) {
+        case '0':
+          console.log('\nSistema encerrado!')
+          break
+        case '1':
+          this.registrarPessoa()
+          break
+        case '2':
+          this.listarBancoDeDados()
+          break
+        case '3':
+          this.buscarPeloNome()
+          break
+        case '4':
+          this.atualizarPessoa()
+          break
+        case '5':
+          this.deletarPessoa()
+          break
+        default:
+          console.log('\nEscolha uma opção válida!')
+      }
+    } while (entrada !== '0')
   }
-}
 
-function atualizarPessoa() {
-  try {
-    const nome = p('Digite um nome de quem deseja atualizar dados: ')
-    const novoNome = p('Caso deseje alterar o nome digite um novo nome, se não, pressione Enter: ')
-    const novaIdade = p('Caso deseje alterar a idade digite uma nova idade, se não, pressione Enter: ')
+  private registrarPessoa(): void {
+    const nome = Menu.prompt('Nome: ').trim()
+    const idade = parseInt(Menu.prompt('Idade: ').trim())
+    const email = Menu.prompt('Email: ').trim()
 
-    const resposta = bd.atualizar(nome, novoNome, parseInt(novaIdade))
-    console.log(`\nCadastro atualizado com sucesso\n${resposta.toString()}`)
-  } catch (error) {
-    console.error('Erro ao atualizar pessoa:', error)
+    try {
+      const pessoa = new Pessoa(nome, idade, email)
+      this.bd.adicionar(pessoa)
+      console.log('\nCadastro realizado com sucesso\n')
+    } catch (error) {
+      console.error('\nFalha ao registrar:', error)
+    }
   }
-}
 
-function deletarPessoa() {
-  const nome = p('Digite um nome de quem deseja deletar: ')
+  private listarBancoDeDados(): void {
+    console.table(this.bd.listar())
+  }
 
-  const resposta = bd.deletar(nome) ? 'Pessoa deletada com sucesso!' : 'Não foi possível achar nenhum registro no nome desejado'
-  console.log(resposta)
-}
+  private buscarPeloNome(): void {
+    const nome = Menu.prompt('Nome para a busca: ').trim()
 
-function listarBancoDeDados() {
-  console.table(bd.listar())
-}
+    try {
+      const resultadoDaBusca = this.bd.buscar(nome)
+      console.log(`\n${resultadoDaBusca}\n`)
+    } catch (error) {
+      console.error('\nFalha na busca:', error)
+    }
+  }
 
-function buscarPeloNome() {
-  const nome = p('Digite um nome de quem deseja buscar: ')
+  private atualizarPessoa(): void {
+    const nome = Menu.prompt('Nome de quem deseja atualizar: ').trim()
+    const novoNome = Menu.prompt('Para alterar o nome digite um novo nome, para manter pressione Enter: ').trim()
+    const novaIdade = parseInt(Menu.prompt('Para alterar a idade digite uma nova idade, para manter pressione Enter: ').trim())
 
-  const resultadoDaBusca = bd.buscar(nome)
-  const resposta = resultadoDaBusca?.toString() ?? 'Não foi possível achar nenhum registro no nome desejado'
-  console.log(resposta)
+    try {
+      this.bd.atualizar(nome, novoNome, novaIdade)
+      console.log('\nCadastro atualizado com sucesso\n')
+    } catch (error) {
+      console.error('\nFalha ao atualizar:', error)
+    }
+  }
+
+  private deletarPessoa(): void {
+    const nome = Menu.prompt('Digite o nome de quem deseja deletar: ').trim()
+
+    try {
+      this.bd.deletar(nome)
+      console.log('\nPessoa deletada com sucesso!\n')
+    } catch (error) {
+      console.error('\nFalha ao deletar:', error)
+    }
+  }
 }
