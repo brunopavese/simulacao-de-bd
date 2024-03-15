@@ -1,11 +1,23 @@
 import { Pessoa } from './Pessoa'
+import * as fs from 'fs'
+
+interface IPessoa {
+  _nome: string
+  _idade: number
+  _email: string
+}
 
 export class BancoDeDados {
   private static _instancia: BancoDeDados
   private _pessoas: Array<Pessoa>
 
   private constructor() {
-    this._pessoas = []
+    try {
+      const dados = fs.readFileSync('dados.json', 'utf-8')
+      this._pessoas = JSON.parse(dados).map(({ _nome, _idade, _email }: IPessoa) => new Pessoa(_nome, _idade, _email))
+    } catch (error) {
+      this._pessoas = []
+    }
   }
 
   public static get instancia(): BancoDeDados {
